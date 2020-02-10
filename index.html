@@ -38,8 +38,11 @@
       #messages li {
         padding: 5px 10px;
       }
-      #messages li:nth-child(odd) {
+      /* #messages li:nth-child(odd) {
         background: #eee;
+      } */
+      .current-user {
+        background-color: blue;
       }
     </style>
     <script src="/socket.io/socket.io.js"></script>
@@ -49,12 +52,14 @@
         var socket = io();
         $("form").submit(function(e) {
           e.preventDefault(); // prevents page reloading
-          socket.emit("chat message", $("#name").val() + ": " + $("#m").val());
+          let message = $("#name").val() + ": " + $("#m").val();
+          socket.emit("chat message", message);
+          $("#messages").append($("<li class='current-user'>").text(message));
           $("#m").val("");
           return false;
         });
         socket.on("chat message", function(msg) {
-          $("#messages").append($("<li>").text(msg));
+          $("#messages").append($("<li class='other-user'>").text(msg));
         });
       });
     </script>
