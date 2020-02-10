@@ -38,6 +38,14 @@
       #messages li {
         padding: 5px 10px;
       }
+
+      .name {
+        color: red;
+      }
+
+      .current-user .name {
+        color: blue;
+      }
       /* #messages li:nth-child(odd) {
         background: #eee;
       } */
@@ -53,8 +61,15 @@
         $("form").submit(function(e) {
           e.preventDefault(); // prevents page reloading
           let message = $("#name").val() + ": " + $("#m").val();
+          let html =
+            "<li class='current-user'><span class='name'>" +
+            $("#name").val() +
+            ": </span>" +
+            $("#m").val();
+          +"</li>";
+          console.log(html);
           socket.emit("chat message", message);
-          $("#messages").append($("<li class='current-user'>").text(message));
+          $("#messages").append(html);
           $("#m").val("");
           return false;
         });
