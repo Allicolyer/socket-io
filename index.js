@@ -11,8 +11,8 @@ app.get("/", function(req, res) {
 });
 
 io.on("connection", function(socket) {
-  socket.on("chat message", function(msg) {
-    socket.broadcast.emit("chat message", msg);
+  socket.on("chat message", function(name, msg) {
+    socket.broadcast.emit("chat message", name, msg);
   });
   console.log("a user connected");
   socket.on("disconnect", function() {

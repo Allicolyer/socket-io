@@ -35,17 +35,19 @@ form button {
 }
 
 #messages .current-user {
-  background-color: blue;
+  /* background-color: blue; */
 }
 
 #messages li:nth-child(odd):not(.current-user) {
-  background: #eee;
+  /* background: #eee; */
 }
 
-/* .name {
+.name {
+  font-weight: bold;
   color: red;
-} */
+}
 
-/* .current-user .name {
+.other-name {
+  font-weight: bold;
   color: blue;
-} */
+}

@@ -5,29 +5,7 @@
     <link rel="stylesheet" href="/style.css" />
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
-    <script>
-      $(function() {
-        var socket = io();
-        $("form").submit(function(e) {
-          e.preventDefault(); // prevents page reloading
-          let message = $("#name").val() + ": " + $("#m").val();
-          let html =
-            "<li class='current-user'><span class='name'>" +
-            $("#name").val() +
-            ": </span>" +
-            $("#m").val();
-          +"</li>";
-          console.log(html);
-          socket.emit("chat message", message);
-          $("#messages").append(html);
-          $("#m").val("");
-          return false;
-        });
-        socket.on("chat message", function(msg) {
-          $("#messages").append($("<li class='other-user'>").text(msg));
-        });
-      });
-    </script>
+    <script src="/main.js"></script>
   </head>
   <body>
     <ul id="messages"></ul>
