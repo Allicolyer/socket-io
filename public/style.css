@@ -34,16 +34,18 @@ form button {
   padding: 5px 10px;
 }
 
-.name {
-  color: red;
-}
-
-.current-user .name {
-  color: blue;
-}
-/* #messages li:nth-child(odd) {
-        background: #eee;
-      } */
-.current-user {
+#messages .current-user {
   background-color: blue;
 }
+
+#messages li:nth-child(odd):not(.current-user) {
+  background: #eee;
+}
+
+/* .name {
+  color: red;
+} */
+
+/* .current-user .name {
+  color: blue;
+} */
