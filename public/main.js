@@ -1,5 +1,6 @@
 $(function() {
   var socket = io();
+
   $("form").submit(function(e) {
     e.preventDefault(); // prevents page reloading
     let name = $("#name").val();
@@ -17,7 +18,10 @@ $(function() {
   });
   socket.on("chat message", function(name, message) {
     let html =
-      "<li><span class='other-name'>" + name + ": </span>" + message + "</li>";
+      "<li><span class='name'>" + name + ": </span>" + message + "</li>";
     $("#messages").append(html);
+
+    let audio = new Audio('incoming-message.mp3');
+    audio.play();
   });
 });
