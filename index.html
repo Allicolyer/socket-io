@@ -3,16 +3,29 @@
   <head>
     <title>Socket.IO chat</title>
     <link rel="stylesheet" href="style/main.css" />
+    <link rel="stylesheet" href="style/modal.css" />
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script src="scripts/main.js"></script>
+    <script src="scripts/modal.js"></script>
   </head>
   <body>
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <span>Set your username</span>
+        <form class="name">
+          <input id="name" autocomplete="off" value="guest" />
+        </form>
+      </div>
+    </div>
     <ul id="messages"></ul>
-    <form action="">
-      <input id="name" autocomplete="off" value="guest" />
+    <form class="message-form" action="">
       <input id="message" autocomplete="off" />
       <button>Send</button>
+      </div>
     </form>
   </body>
 </html>

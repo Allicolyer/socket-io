@@ -3,7 +3,9 @@ $(function() {
 
   $("form").submit(function(e) {
     e.preventDefault(); // prevents page reloading
+  });
 
+  $(".message-form").submit(function(e) {
     //get name and message from input fields
     let name = $("#name").val();
     let message = $("#message").val();
