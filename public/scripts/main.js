@@ -12,7 +12,7 @@ $(function() {
     ///add the message to the window
     addMessage(name, message, true);
     //play outgoing message sound
-    playAudio("outgoing-message.wav");
+    playAudio("../audio/outgoing-message.wav");
     //clear the input field
     $("#message").val("");
     return false;
@@ -22,7 +22,7 @@ $(function() {
     ///add the message to the window
     addMessage(name, message, false);
     //play incoming message sound
-    playAudio("incoming-message.mp3");
+    playAudio("../audio/incoming-message.mp3");
   });
 });
 
