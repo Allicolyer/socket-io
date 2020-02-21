@@ -6,10 +6,6 @@ var io = require("socket.io")(http);
 //use static files
 app.use(express.static("public"));
 
-app.get("/", function(req, res) {
-  res.sendFile(__dirname + "/index.html");
-});
-
 io.on("connection", function(socket) {
   socket.on("chat message", function(name, msg) {
     socket.broadcast.emit("chat message", name, msg);
@@ -19,6 +15,6 @@ io.on("connection", function(socket) {
     console.log("user disconnected");
   });
 });
-http.listen(3000, function() {
-  console.log("listening on *:3000");
+http.listen(4000, function() {
+  console.log("listening on *:4000");
 });

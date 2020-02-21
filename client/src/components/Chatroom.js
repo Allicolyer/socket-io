@@ -12,6 +12,16 @@ export class Chatroom extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
+  componentDidMount() {
+    const { socket } = this.props;
+    this.initSocket(socket);
+  }
+
+  initSocket(socket) {
+    socket.on("chat message", (name, message) => this.addMessage(name, message, false));
+    console.log(socket);
+  }
+
   handleNameChange(event) {
     this.setState({ name: event.target.value });
   }
@@ -20,12 +30,14 @@ export class Chatroom extends React.Component {
     this.setState({ message: event.target.value });
   }
 
+  addMessage(name, message, isCurrentUser) {
+    this.setState({messages: [...this.state.messages, {name: name, message: message, isCurrentUser: isCurrentUser}]});
+  }
+
   handleSubmit(event) {
     event.preventDefault();
-    this.setState({messages: [...this.state.messages, {name: this.state.name, message: this.state.message, isCurrentUser: true}]});
-    // const m = React.createElement("Message", {name: this.state.name, message: this.state.message, isCurrentUser: true});
-
-    // ReactDOM.render(m, document.getElementById('messages'));
+    this.addMessage(this.state.name, this.state.message, true);
+    this.props.socket.emit("chat message", this.state.name, this.state.message);
   }
 
   render() {
