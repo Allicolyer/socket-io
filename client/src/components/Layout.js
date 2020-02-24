@@ -1,34 +1,33 @@
-import React, { Component } from "react"
-import io from 'socket.io-client'
-import { Chatroom } from './Chatroom'
+import React from "react";
+import io from "socket.io-client";
+import { Chatroom } from "./Chatroom";
 
-
-const socketUrl = "http://localhost:4000"
+const socketUrl = "http://localhost:4000";
 export class Layout extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state =  {
-      socket:null
+    this.state = {
+      socket: null
     };
   }
 
   componentWillMount() {
-      this.initSocket();
+    this.initSocket();
   }
 
   initSocket = () => {
-    const socket = io(socketUrl)
+    const socket = io(socketUrl);
 
-    socket.on('connect', () => {
+    socket.on("connect", () => {
       console.log("Connected");
-    })
+    });
 
-    this.setState({socket})
-  }
+    this.setState({ socket });
+  };
 
   render() {
     const { socket } = this.state;
-    return (<Chatroom socket={socket} />);
+    return <Chatroom socket={socket} />;
   }
 }
