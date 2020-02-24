@@ -1,5 +1,5 @@
 export const apiCall = context => {
-  fetch("https://transformer.huggingface.co/autocomplete/gpt2/large", {
+  return fetch("https://transformer.huggingface.co/autocomplete/gpt2/large", {
     method: "POST",
     headers: {
       Accept: "application/json",
@@ -17,7 +17,6 @@ export const apiCall = context => {
       return response.json();
     })
     .then(myJson => {
-      console.log(myJson.sentences[0].value);
       return myJson.sentences[0].value;
     });
 };

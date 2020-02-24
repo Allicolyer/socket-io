@@ -18,6 +18,7 @@ export class Chatroom extends React.Component {
   }
 
   initSocket(socket) {
+    // receive message code
     socket.on("chat message", (name, message, isCurrentUser) => {
       this.addMessage(name, message, isCurrentUser);
       if (isCurrentUser) {
@@ -37,19 +38,26 @@ export class Chatroom extends React.Component {
   }
 
   addMessage(name, message, isCurrentUser) {
+    // adding some message to our state
     this.setState({
       messages: [
         ...this.state.messages,
         { name: name, message: message, isCurrentUser: isCurrentUser }
       ]
     });
+
+    // Send an AI message
+    if (isCurrentUser) {
+      this.sendAIMessage();
+    }
   }
 
-  addAIMessage() {
-    this.props.socket.emit(
-      "AI message",
-      `Robot from ${this.state.name}`,
-      "Hey there!"
+  sendAIMessage() {
+    let last = this.state.messages.length - 1;
+    //Call the API with the last message sent
+    //To-do use all messages sent instead of the just the lsat one.
+    apiCall(this.state.messages[last].message).then(res =>
+      this.props.socket.emit("AI message", `Robot from ${this.state.name}`, res)
     );
   }
 
@@ -61,7 +69,6 @@ export class Chatroom extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     this.props.socket.emit("chat message", this.state.name, this.state.message);
-    this.addAIMessage();
   }
 
   render() {
