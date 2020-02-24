@@ -1,6 +1,7 @@
 import React from "react";
 import { Message } from "./Message";
 import Modal from "./Modal";
+import { apiCall } from "../utils/api-call";
 
 export class Chatroom extends React.Component {
   constructor(props) {
@@ -18,9 +19,13 @@ export class Chatroom extends React.Component {
   }
 
   initSocket(socket) {
-    socket.on("chat message", (name, message) => {
-      this.addMessage(name, message, false);
-      this.playAudio("./audio/incoming-message.mp3");
+    socket.on("chat message", (name, message, isCurrentUser) => {
+      this.addMessage(name, message, isCurrentUser);
+      if (isCurrentUser) {
+        this.playAudio("./audio/outgoing-message.wav");
+      } else {
+        this.playAudio("./audio/incoming-message.mp3");
+      }
     });
   }
 
@@ -41,18 +46,23 @@ export class Chatroom extends React.Component {
     });
   }
 
+  addAIMessage() {
+    this.props.socket.emit(
+      "AI message",
+      `Robot from ${this.state.name}`,
+      "Hey there!"
+    );
+  }
+
   playAudio(file) {
-    console.log("I lovem music");
     let audio = new Audio(file);
-    console.log(audio);
     audio.play();
   }
 
   handleSubmit(event) {
     event.preventDefault();
-    this.addMessage(this.state.name, this.state.message, true);
-    this.playAudio("./audio/outgoing-message.wav");
     this.props.socket.emit("chat message", this.state.name, this.state.message);
+    this.addAIMessage();
   }
 
   showModal = event => {
