@@ -59,6 +59,14 @@ body {
   color: red;
 }
 
+.chatroom-container {
+  display: flex;
+}
+
+.chat-window {
+  width: 50%;
+}
+
 .modal-container {
   position: absolute;
   top: 0;
@@ -127,6 +135,12 @@ body {
 
 #centered-toggle-button {
   position: absolute;
+}
+
+.transcript-window {
+  width: 50%;
+  height: calc(100vh - 100px);
+  overflow: scroll;
 }
 
 /*# sourceMappingURL=main.css.map */

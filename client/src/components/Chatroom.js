@@ -121,26 +121,32 @@ export class Chatroom extends React.Component {
         <button className="modal-button" onClick={this.showModal}>
           Change Username
         </button>
-        <ul id="messages">
-          {this.state.messages.map((m, i) => (
-            <Message
-              key={i}
-              name={m.name}
-              message={m.message}
-              isCurrentUser={m.isCurrentUser}
-            />
-          ))}
-        </ul>
-        <Transcript context={this.state.context} />
-        <form onSubmit={this.handleSubmit} className="message-form">
-          <input
-            id="message"
-            type="text"
-            value={this.state.message}
-            onChange={this.handleMessageChange}
-          />
-          <button>Send</button>
-        </form>
+        <div className="chatroom-container">
+          <div className="chat-window">
+            <ul id="messages">
+              {this.state.messages.map((m, i) => (
+                <Message
+                  key={i}
+                  name={m.name}
+                  message={m.message}
+                  isCurrentUser={m.isCurrentUser}
+                />
+              ))}
+            </ul>
+            <form onSubmit={this.handleSubmit} className="message-form">
+              <input
+                id="message"
+                type="text"
+                value={this.state.message}
+                onChange={this.handleMessageChange}
+              />
+              <button>Send</button>
+            </form>
+          </div>
+          <div className="transcript-window">
+            <Transcript context={this.state.context} />
+          </div>
+        </div>
       </div>
     );
   }
