@@ -1,10 +1,11 @@
 import React from "react";
 import { Message } from "./Message";
+import Modal from "./Modal";
 
 export class Chatroom extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { name: "guest", message: "", messages: [] };
+    this.state = { name: "guest", message: "", messages: [], show: true };
 
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handleMessageChange = this.handleMessageChange.bind(this);
@@ -54,9 +55,33 @@ export class Chatroom extends React.Component {
     this.props.socket.emit("chat message", this.state.name, this.state.message);
   }
 
+  showModal = event => {
+    this.setState({
+      show: !this.state.show
+    });
+  };
+
+  enterUsername = event => {
+    event.preventDefault();
+    this.showModal();
+  };
+
   render() {
     return (
       <div>
+        <Modal onClose={this.showModal} show={this.state.show}>
+          <form onSubmit={this.enterUsername}>
+            <input
+              id="name"
+              type="text"
+              value={this.state.name}
+              onChange={this.handleNameChange}
+            />
+          </form>
+        </Modal>
+        <button className="modal-button" onClick={this.showModal}>
+          Change Username
+        </button>
         <ul id="messages">
           {this.state.messages.map((m, i) => (
             <Message
@@ -67,13 +92,7 @@ export class Chatroom extends React.Component {
             />
           ))}
         </ul>
-        <form onSubmit={this.handleSubmit}>
-          <input
-            id="name"
-            type="text"
-            value={this.state.name}
-            onChange={this.handleNameChange}
-          />
+        <form onSubmit={this.handleSubmit} className="message-form">
           <input
             id="message"
             type="text"
