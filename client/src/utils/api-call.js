@@ -17,6 +17,14 @@ export const apiCall = context => {
       return response.json();
     })
     .then(myJson => {
-      return myJson.sentences[0].value;
+      // picks the longest response out of the three response messages
+      let longest = "";
+      myJson.sentences.forEach(sentence => {
+        if (sentence.value.length > longest.length) {
+          longest = sentence.value;
+        }
+      });
+      
+      return longest;
     });
 };

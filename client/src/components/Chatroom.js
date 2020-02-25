@@ -55,10 +55,27 @@ export class Chatroom extends React.Component {
 
   sendAIMessage() {
     let last = this.state.messages.length - 1;
+    let context = ""
+
+    this.state.messages.forEach(message => {
+      context += message.message + " ";
+    });
+    
+    // replace all new lines with spaces
+    context = context.replace(/[\r\n]/g, " ")
+    //replace all two+ spaces with a single space.
+    .replace(/\s\s+/g, " ")
+    //replace .?! with .. (allows me to keep a . at the end of each quote
+    .replace(/[\/#.,;!?$%\^&\*:{}=\_`~()]/g, "")
+
+    console.log(context);
     //Call the API with the last message sent
     //To-do use all messages sent instead of the just the lsat one.
-    apiCall(this.state.messages[last].message).then(res =>
-      this.props.socket.emit("AI message", `Robot from ${this.state.name}`, res)
+    apiCall(context).then(res =>
+      this.props.socket.emit("AI message", `Robot from ${this.state.name}`,
+        res.replace(/[\r\n]/g, " ")
+        .replace(/[\/#.,;!?$%\^&\*:{}=\_`~()]/g, " ")
+        .replace(/\s\s+/g, " ").trim())
     );
   }
 
@@ -70,6 +87,7 @@ export class Chatroom extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     this.props.socket.emit("chat message", this.state.name, this.state.message);
+    this.state.message = "";
   }
 
   showModal = event => {
