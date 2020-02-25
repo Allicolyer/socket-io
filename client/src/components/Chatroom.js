@@ -1,14 +1,20 @@
 import React from "react";
 import { Message } from "./Message";
 import Modal from "./Modal";
-import StoryWindow from "./StoryWindow";
+import Transcript from "./Transcript";
 
 import { apiCall } from "../utils/api-call";
 
 export class Chatroom extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { name: "guest", message: "", messages: [], context:"", show: true };
+    this.state = {
+      name: "guest",
+      message: "",
+      messages: [],
+      context: "",
+      show: true
+    };
 
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handleMessageChange = this.handleMessageChange.bind(this);
@@ -42,15 +48,16 @@ export class Chatroom extends React.Component {
 
   addMessage(name, message, isCurrentUser, isAIUser) {
     //Keep track of all message text, including punctuation
-    this.updateContext(message)
+    this.updateContext(message);
 
-    if (isAIUser){
+    if (isAIUser) {
       //clean it up before adding it to the messages state
       message
         .replace(/[\r\n]/g, " ")
         .replace(/[\/#.,;!?$%\^&\*:{}=\_`~()]/g, " ")
         .replace(/["]/g, "<-")
-        .replace(/\s\s+/g, " ").trim()
+        .replace(/\s\s+/g, " ")
+        .trim();
     }
     // adding some message to our state
     this.setState({
@@ -66,12 +73,12 @@ export class Chatroom extends React.Component {
     }
   }
 
-  updateContext(message){
-    this.setState({context: `${this.state.context} ${message}`})
+  updateContext(message) {
+    this.setState({ context: `${this.state.context} ${message}` });
   }
 
   sendAIMessage() {
-    apiCall(this.state.context).then(res => 
+    apiCall(this.state.context).then(res =>
       this.props.socket.emit("AI message", `Robot from ${this.state.name}`, res)
     );
   }
@@ -124,7 +131,7 @@ export class Chatroom extends React.Component {
             />
           ))}
         </ul>
-        <StoryWindow context={this.state.context} />
+        <Transcript context={this.state.context} />
         <form onSubmit={this.handleSubmit} className="message-form">
           <input
             id="message"
