@@ -47,17 +47,21 @@ export class Chatroom extends React.Component {
   }
 
   addMessage(name, message, isCurrentUser, isAIUser) {
+    console.log("I added");
+
     //Keep track of all message text, including punctuation
     this.updateContext(message);
-
+    console.log(isAIUser);
     if (isAIUser) {
       //clean it up before adding it to the messages state
-      message
+      message = message
         .replace(/[\r\n]/g, " ")
         .replace(/[\/#.,;!?$%\^&\*:{}=\_`~()]/g, " ")
         .replace(/["]/g, "<-")
         .replace(/\s\s+/g, " ")
         .trim();
+
+      console.log(message);
     }
     // adding some message to our state
     this.setState({
@@ -91,7 +95,9 @@ export class Chatroom extends React.Component {
   handleSubmit(event) {
     event.preventDefault();
     this.props.socket.emit("chat message", this.state.name, this.state.message);
-    this.state.message = "";
+    this.setState({
+      message: ""
+    });
   }
 
   showModal = event => {
