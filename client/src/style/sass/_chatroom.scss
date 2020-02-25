@@ -44,7 +44,7 @@ body {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  height: calc(100vh -$message-bar-height);
+  height: calc(100vh - #{$message-bar-height});
   overflow: scroll;
 
   li {
