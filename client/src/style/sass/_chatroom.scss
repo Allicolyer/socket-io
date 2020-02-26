@@ -44,7 +44,7 @@ body {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  height: calc(100vh -$message-bar-height);
+  height: calc(100vh - #{$message-bar-height});
   overflow: scroll;
 
   li {
@@ -58,4 +58,12 @@ body {
   &.current-user {
     color: $primary-red;
   }
+}
+
+.chatroom-container {
+  display: flex;
+}
+
+.chat-window {
+  width: 50%;
 }

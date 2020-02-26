@@ -44,7 +44,7 @@ body {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  height: calc(100vh -$message-bar-height);
+  height: calc(100vh - 100px);
   overflow: scroll;
 }
 #messages li {
@@ -57,6 +57,14 @@ body {
 }
 .name.current-user {
   color: red;
+}
+
+.chatroom-container {
+  display: flex;
+}
+
+.chat-window {
+  width: 50%;
 }
 
 .modal-container {
@@ -127,6 +135,12 @@ body {
 
 #centered-toggle-button {
   position: absolute;
+}
+
+.transcript-window {
+  width: 50%;
+  height: calc(100vh - 100px);
+  overflow: scroll;
 }
 
 /*# sourceMappingURL=main.css.map */
