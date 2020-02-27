@@ -2,7 +2,7 @@ import React from "react";
 import io from "socket.io-client";
 import { Chatroom } from "./Chatroom";
 
-const socketUrl = "http://localhost:4000";
+const socketUrl = "/";
 export class Layout extends React.Component {
   constructor(props) {
     super(props);
