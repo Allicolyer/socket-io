@@ -1,7 +1,14 @@
 var express = require("express");
+const path = require("path");
 var app = express();
 var http = require("http").createServer(app);
 var io = require("socket.io")(http);
+
+app.use(express.static(path.join(__dirname, "client/build")));
+
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname + "/client/build/index.html"));
+});
 
 io.on("connection", function(socket) {
   socket.on("chat message", function(name, msg) {
@@ -18,6 +25,7 @@ io.on("connection", function(socket) {
     console.log("user disconnected");
   });
 });
-http.listen(4000, function() {
+
+http.listen(process.env.PORT || 4000, function() {
   console.log("listening on *:4000");
 });
