@@ -10,19 +10,31 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname + "/client/build/index.html"));
 });
 
+var isInRoom1 = true;
+
 io.on("connection", function(socket) {
-  socket.on("chat message", function(name, msg) {
+  socket.join("Default Room");
+  socket.on("chat message", function(name, msg, room) {
+    console.log("receiving message from " + name);
     //sends the message to everyone else
-    socket.broadcast.emit("chat message", name, msg, false, false);
+    socket.broadcast.to(room).emit("chat message", name, msg, false, false);
     //sends the message back to you with isCurrentUser set to true
     socket.emit("chat message", name, msg, true, false);
   });
-  socket.on("AI message", function(name, msg) {
-    io.emit("chat message", name, msg, false, true);
+  socket.on("AI message", function(name, msg, room) {
+    io.sockets.in(room).emit("chat message", name, msg, false, true);
   });
   console.log("a great user connected");
   socket.on("disconnect", function() {
     console.log("user disconnected");
+  });
+
+  socket.on("room", function (currentRoom, nextRoom) {
+    console.log("Leaving " + currentRoom);
+    console.log("Joining " + nextRoom);
+
+    socket.leave(currentRoom);
+    socket.join(nextRoom);
   });
 });
 

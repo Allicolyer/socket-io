@@ -9,6 +9,7 @@ export class Chatroom extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      room: "Default Room",
       name: "guest",
       message: "",
       messages: [],
@@ -19,6 +20,16 @@ export class Chatroom extends React.Component {
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handleMessageChange = this.handleMessageChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.toggleRoom = this.toggleRoom.bind(this);
+  }
+
+  toggleRoom(event) {
+    console.log("toggleRoom()");
+    this.setState({room: (this.state.room == "Default Room") ? "Room 1" : "Default Room"},
+      function () {
+        this.props.socket.emit("room", (this.state.room == "Default Room") ? "Room 1" : "Default Room", this.state.room);
+      }
+    );
   }
 
   componentDidMount() {
@@ -83,7 +94,7 @@ export class Chatroom extends React.Component {
 
   sendAIMessage() {
     apiCall(this.state.context).then(res =>
-      this.props.socket.emit("AI message", `Robot from ${this.state.name}`, res)
+      this.props.socket.emit("AI message", `Robot from ${this.state.name}`, res, this.state.room)
     );
   }
 
@@ -94,7 +105,7 @@ export class Chatroom extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    this.props.socket.emit("chat message", this.state.name, this.state.message);
+    this.props.socket.emit("chat message", this.state.name, this.state.message, this.state.room);
     this.setState({
       message: ""
     });
@@ -127,6 +138,8 @@ export class Chatroom extends React.Component {
         <button className="modal-button" onClick={this.showModal}>
           Change Username
         </button>
+        <h1>{this.state.room}</h1>
+        <button onClick={this.toggleRoom}> Switch Room </button>
         <div className="chatroom-container">
           <div className="chat-window">
             <ul id="messages">
