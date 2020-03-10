@@ -14,7 +14,8 @@ export class Chatroom extends React.Component {
       message: "",
       messages: [],
       context: "",
-      show: true
+      showUsernameModal: true,
+      showRoomModal: false
     };
 
     this.handleNameChange = this.handleNameChange.bind(this);
@@ -111,11 +112,18 @@ export class Chatroom extends React.Component {
     });
   }
 
-  showModal = event => {
+  showUsernameModal = event => {
     this.setState({
-      show: !this.state.show
+      showUsernameModal: !this.state.showUsernameModal
     });
   };
+
+  showRoomModal = event => {
+    this.setState({
+      showRoomModal: !this.state.showRoomModal
+    });
+  };
+
 
   enterUsername = event => {
     event.preventDefault();
@@ -125,7 +133,7 @@ export class Chatroom extends React.Component {
   render() {
     return (
       <div>
-        <Modal onClose={this.showModal} show={this.state.show}>
+        <Modal onClose={this.showUsernameModal} show={this.state.showUsernameModal} header="Enter Username">
           <form onSubmit={this.enterUsername}>
             <input
               id="name"
@@ -135,11 +143,16 @@ export class Chatroom extends React.Component {
             />
           </form>
         </Modal>
-        <button className="modal-button" onClick={this.showModal}>
+        <Modal onClose={this.showRoomModal} show={this.state.showRoomModal} header="Switch Room">
+          <button onClick={this.toggleRoom}> Switch Room </button>
+        </Modal>
+        <button className="modal-button" onClick={this.showUsernameModal}>
           Change Username
         </button>
+         <button className="modal-button" onClick={this.showRoomModal}>
+          Change Room
+        </button>
         <h1>{this.state.room}</h1>
-        <button onClick={this.toggleRoom}> Switch Room </button>
         <div className="chatroom-container">
           <div className="chat-window">
             <ul id="messages">
