@@ -3,13 +3,27 @@ import { Message } from "./Message";
 import Modal from "./Modal";
 import Transcript from "./Transcript";
 
+import Dropdown from 'react-dropdown';
+import 'react-dropdown/style.css';
+
 import { apiCall } from "../utils/api-call";
+
+const roomOptions = {
+  'Under the Sea': "Under the sea, under the sea, everything's better down where it's wetter, take it from me!",
+  'Zork': "TBD",
+  'Pandemic': "Make sure you stay socially isolated!",
+  'Misc': ""
+}
+
+const roomNames = Object.keys(roomOptions)
+
+const defaultRoom = roomNames[3];
 
 export class Chatroom extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      room: "Default Room",
+      room: defaultRoom,
       name: "guest",
       message: "",
       messages: [],
@@ -21,14 +35,15 @@ export class Chatroom extends React.Component {
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handleMessageChange = this.handleMessageChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.toggleRoom = this.toggleRoom.bind(this);
+    this.changeRoom = this.changeRoom.bind(this);
   }
 
-  toggleRoom(event) {
-    console.log("toggleRoom()");
-    this.setState({room: (this.state.room == "Default Room") ? "Room 1" : "Default Room"},
+  changeRoom(event) {
+    let nextRoomName = event.value;
+    let previousRoomName = this.state.room;
+    this.setState({room: nextRoomName, context: roomOptions[nextRoomName], messages:[]},
       function () {
-        this.props.socket.emit("room", (this.state.room == "Default Room") ? "Room 1" : "Default Room", this.state.room);
+        this.props.socket.emit("room", previousRoomName, nextRoomName);
       }
     );
   }
@@ -127,7 +142,7 @@ export class Chatroom extends React.Component {
 
   enterUsername = event => {
     event.preventDefault();
-    this.showModal();
+    this.showUsernameModal();
   };
 
   render() {
@@ -144,7 +159,7 @@ export class Chatroom extends React.Component {
           </form>
         </Modal>
         <Modal onClose={this.showRoomModal} show={this.state.showRoomModal} header="Switch Room">
-          <button onClick={this.toggleRoom}> Switch Room </button>
+            <Dropdown options={roomNames} onChange={this.changeRoom} value={defaultRoom} placeholder="Select a Room" />;
         </Modal>
         <button className="modal-button" onClick={this.showUsernameModal}>
           Change Username
