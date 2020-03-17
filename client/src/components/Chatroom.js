@@ -63,6 +63,10 @@ export class Chatroom extends React.Component {
         this.playAudio("./audio/incoming-message.mp3");
       }
     });
+
+    socket.on("history", (transcript) => {
+      console.log(transcript);
+    })
   }
 
   handleNameChange(event) {
@@ -74,11 +78,8 @@ export class Chatroom extends React.Component {
   }
 
   addMessage(name, message, isCurrentUser, isAIUser) {
-    console.log("I added");
-
     //Keep track of all message text, including punctuation
     this.updateContext(message);
-    console.log(isAIUser);
     if (isAIUser) {
       //clean it up before adding it to the messages state
       message = message
@@ -87,8 +88,6 @@ export class Chatroom extends React.Component {
         .replace(/["]/g, "<-")
         .replace(/\s\s+/g, " ")
         .trim();
-
-      console.log(message);
     }
     // adding some message to our state
     this.setState({

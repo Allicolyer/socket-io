@@ -10,7 +10,12 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname + "/client/build/index.html"));
 });
 
-var isInRoom1 = true;
+var transcripts = {
+  'Under the Sea':  "I'm Seaful smart",
+  'Zork': "I'm Zork smart",
+  'Pandemic': "I'm Pandemic smart",
+  'Misc': "I'm dumb"
+}
 
 io.on("connection", function(socket) {
   socket.join("Default Room");
@@ -30,11 +35,9 @@ io.on("connection", function(socket) {
   });
 
   socket.on("room", function (currentRoom, nextRoom) {
-    console.log("Leaving " + currentRoom);
-    console.log("Joining " + nextRoom);
-
     socket.leave(currentRoom);
     socket.join(nextRoom);
+    socket.emit("history", transcripts[nextRoom])
   });
 });
 
