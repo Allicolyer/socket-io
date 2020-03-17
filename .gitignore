@@ -9,6 +9,7 @@ client/.pnp
 
 # testing
 client/coverage
+client/build
 
 # misc
 client/.DS_Store
