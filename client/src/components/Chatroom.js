@@ -3,19 +3,20 @@ import { Message } from "./Message";
 import Modal from "./Modal";
 import Transcript from "./Transcript";
 
-import Dropdown from 'react-dropdown';
-import 'react-dropdown/style.css';
+import Dropdown from "react-dropdown";
+import "react-dropdown/style.css";
 
 import { apiCall } from "../utils/api-call";
 
 const roomOptions = {
-  'Under the Sea': "Under the sea, under the sea, everything's better down where it's wetter, take it from me!",
-  'Zork': "TBD",
-  'Pandemic': "Make sure you stay socially isolated!",
-  'Misc': ""
-}
+  "Under the Sea":
+    "Under the sea, under the sea, everything's better down where it's wetter, take it from me!",
+  Zork: "TBD",
+  Pandemic: "Make sure you stay socially isolated!",
+  Misc: ""
+};
 
-const roomNames = Object.keys(roomOptions)
+const roomNames = Object.keys(roomOptions);
 
 const defaultRoom = roomNames[3];
 
@@ -27,7 +28,7 @@ export class Chatroom extends React.Component {
       name: "guest",
       message: "",
       messages: [],
-      context: "",
+      transcript: "",
       showUsernameModal: true,
       showRoomModal: false
     };
@@ -41,8 +42,9 @@ export class Chatroom extends React.Component {
   changeRoom(event) {
     let nextRoomName = event.value;
     let previousRoomName = this.state.room;
-    this.setState({room: nextRoomName, context: roomOptions[nextRoomName], messages:[]},
-      function () {
+    this.setState(
+      { room: nextRoomName, context: roomOptions[nextRoomName], messages: [] },
+      function() {
         this.props.socket.emit("room", previousRoomName, nextRoomName);
       }
     );
@@ -64,9 +66,9 @@ export class Chatroom extends React.Component {
       }
     });
 
-    socket.on("history", (transcript) => {
-      console.log(transcript);
-    })
+    socket.on("transcript", transcript => {
+      this.setState({ transcript: transcript });
+    });
   }
 
   handleNameChange(event) {
@@ -79,7 +81,7 @@ export class Chatroom extends React.Component {
 
   addMessage(name, message, isCurrentUser, isAIUser) {
     //Keep track of all message text, including punctuation
-    this.updateContext(message);
+    // this.updateContext(message);
     if (isAIUser) {
       //clean it up before adding it to the messages state
       message = message
@@ -103,13 +105,14 @@ export class Chatroom extends React.Component {
     }
   }
 
-  updateContext(message) {
-    this.setState({ context: `${this.state.context} ${message}` });
-  }
-
   sendAIMessage() {
-    apiCall(this.state.context).then(res =>
-      this.props.socket.emit("AI message", `Robot from ${this.state.name}`, res, this.state.room)
+    apiCall(this.state.transcript).then(res =>
+      this.props.socket.emit(
+        "AI message",
+        `Robot from ${this.state.name}`,
+        res,
+        this.state.room
+      )
     );
   }
 
@@ -120,7 +123,12 @@ export class Chatroom extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    this.props.socket.emit("chat message", this.state.name, this.state.message, this.state.room);
+    this.props.socket.emit(
+      "chat message",
+      this.state.name,
+      this.state.message,
+      this.state.room
+    );
     this.setState({
       message: ""
     });
@@ -138,7 +146,6 @@ export class Chatroom extends React.Component {
     });
   };
 
-
   enterUsername = event => {
     event.preventDefault();
     this.showUsernameModal();
@@ -147,7 +154,11 @@ export class Chatroom extends React.Component {
   render() {
     return (
       <div>
-        <Modal onClose={this.showUsernameModal} show={this.state.showUsernameModal} header="Enter Username">
+        <Modal
+          onClose={this.showUsernameModal}
+          show={this.state.showUsernameModal}
+          header="Enter Username"
+        >
           <form onSubmit={this.enterUsername}>
             <input
               id="name"
@@ -157,13 +168,23 @@ export class Chatroom extends React.Component {
             />
           </form>
         </Modal>
-        <Modal onClose={this.showRoomModal} show={this.state.showRoomModal} header="Switch Room">
-            <Dropdown options={roomNames} onChange={this.changeRoom} value={defaultRoom} placeholder="Select a Room" />;
+        <Modal
+          onClose={this.showRoomModal}
+          show={this.state.showRoomModal}
+          header="Switch Room"
+        >
+          <Dropdown
+            options={roomNames}
+            onChange={this.changeRoom}
+            value={defaultRoom}
+            placeholder="Select a Room"
+          />
+          ;
         </Modal>
         <button className="modal-button" onClick={this.showUsernameModal}>
           Change Username
         </button>
-         <button className="modal-button" onClick={this.showRoomModal}>
+        <button className="modal-button" onClick={this.showRoomModal}>
           Change Room
         </button>
         <h1>{this.state.room}</h1>
@@ -190,7 +211,7 @@ export class Chatroom extends React.Component {
             </form>
           </div>
           <div className="transcript-window">
-            <Transcript context={this.state.context} />
+            <Transcript context={this.state.transcript} />
           </div>
         </div>
       </div>
