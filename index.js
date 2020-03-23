@@ -10,10 +10,15 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname + "/client/build/index.html"));
 });
 
+const roomNames = ["Under the Sea", "Zork", "Pandemic", "Misc"];
+
 var transcripts = {
-  "Under the Sea": "I'm Seaful smart",
-  Zork: "I'm Zork smart",
-  Pandemic: "I'm Pandemic smart",
+  "Under the Sea":
+    "Under the sea, under the sea, everything's better down where it's wetter, take it from me!",
+  Zork:
+    "West of House. This is an open field west of a white house, with a boarded front door. There is a small mailbox here. A rubber mat saying 'Welcome to Zork!' lies by the door.",
+  Pandemic:
+    "A report found that Coronavirus is now four diseases that have broken out in the world, each threatening to wipe out a region.",
   Misc: ""
 };
 

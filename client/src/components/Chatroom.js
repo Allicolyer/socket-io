@@ -8,15 +8,7 @@ import "react-dropdown/style.css";
 
 import { apiCall } from "../utils/api-call";
 
-const roomOptions = {
-  "Under the Sea":
-    "Under the sea, under the sea, everything's better down where it's wetter, take it from me!",
-  Zork: "TBD",
-  Pandemic: "Make sure you stay socially isolated!",
-  Misc: ""
-};
-
-const roomNames = Object.keys(roomOptions);
+const roomNames = ["Under the Sea", "Zork", "Pandemic", "Misc"];
 
 const defaultRoom = roomNames[3];
 
@@ -42,12 +34,9 @@ export class Chatroom extends React.Component {
   changeRoom(event) {
     let nextRoomName = event.value;
     let previousRoomName = this.state.room;
-    this.setState(
-      { room: nextRoomName, context: roomOptions[nextRoomName], messages: [] },
-      function() {
-        this.props.socket.emit("room", previousRoomName, nextRoomName);
-      }
-    );
+    this.setState({ room: nextRoomName, messages: [] }, function() {
+      this.props.socket.emit("room", previousRoomName, nextRoomName);
+    });
   }
 
   componentDidMount() {
@@ -179,7 +168,6 @@ export class Chatroom extends React.Component {
             value={defaultRoom}
             placeholder="Select a Room"
           />
-          ;
         </Modal>
         <button className="modal-button" onClick={this.showUsernameModal}>
           Change Username
