@@ -32,12 +32,10 @@ body {
   }
 }
 
-.modal-button {
-  position: absolute;
-  top: 0;
-  right: 0;
-  background: $green;
-  z-index: $modal-level;
+.header {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
 }
 
 #messages {
