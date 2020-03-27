@@ -197,7 +197,7 @@ nav a:hover {
   height: auto;
 }
 
-/* margin classes */
+
 .margin-top, .margin-y, .margin {
   margin-top: 15px;
 }
@@ -216,7 +216,6 @@ nav a:hover {
   margin-right: 7.5px;
 }
 
-/*flex divs */
 .flex-column {
   display: flex;
   flex-direction: column;
@@ -231,10 +230,8 @@ nav a:hover {
   flex-wrap: wrap;
 }
 
-/* background style */
 .card {
   border-radius: 10px;
   border: 2px solid tan;
 }
 
-/*# sourceMappingURL=main.css.map */
