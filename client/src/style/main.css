@@ -1,3 +1,39 @@
+/* source https://fdossena.com/?p=html5cool/buttons/i.frag */
+.button {
+  display: inline;
+  margin: 0 5px;
+  min-width: 130px;
+  border-radius: 10px;
+  padding: 7.5px 15px;
+  border: 2px solid black;
+  box-sizing: border-box;
+  text-decoration: none;
+  font-weight: 400;
+  font-size: 0.8em;
+  color: black;
+  background-color: #78f89f;
+  text-align: center;
+  transition: all 0.15s;
+}
+.button:hover {
+  cursor: pointer;
+  font-weight: bold;
+  border-color: #78f89f;
+  background-color: white;
+}
+.button:focus {
+  border-color: #78f89f;
+  background-color: #78f89f;
+}
+.button:disabled {
+  cursor: auto;
+  border-color: gray;
+  background-color: gray;
+}
+.button:disabled:hover {
+  font-weight: normal;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -32,12 +68,10 @@ body {
   margin-right: 0.5%;
 }
 
-.modal-button {
-  position: absolute;
-  top: 0;
-  right: 0;
-  background: #78f89f;
-  z-index: 100;
+.header {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
 }
 
 #messages {

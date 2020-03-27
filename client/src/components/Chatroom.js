@@ -2,10 +2,8 @@ import React from "react";
 import { Message } from "./Message";
 import Modal from "./Modal";
 import Transcript from "./Transcript";
-
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
-
 import { apiCall } from "../utils/api-call";
 
 const roomNames = ["Under the Sea", "Zork", "Pandemic", "Misc"];
@@ -96,12 +94,7 @@ export class Chatroom extends React.Component {
 
   sendAIMessage() {
     apiCall(this.state.transcript).then(res =>
-      this.props.socket.emit(
-        "AI message",
-        `Robot from ${this.state.name}`,
-        res,
-        this.state.room
-      )
+      this.props.socket.emit("AI message", `Robot`, res, this.state.room)
     );
   }
 
@@ -169,13 +162,17 @@ export class Chatroom extends React.Component {
             placeholder="Select a Room"
           />
         </Modal>
-        <button className="modal-button" onClick={this.showUsernameModal}>
-          Change Username
-        </button>
-        <button className="modal-button" onClick={this.showRoomModal}>
-          Change Room
-        </button>
-        <h1>{this.state.room}</h1>
+        <div className="header">
+          <h1>{this.state.room}</h1>
+          <div>
+            <button className="button" onClick={this.showUsernameModal}>
+              Change Username
+            </button>
+            <button className="button" onClick={this.showRoomModal}>
+              Change Room
+            </button>
+          </div>
+        </div>
         <div className="chatroom-container">
           <div className="chat-window">
             <ul id="messages">
