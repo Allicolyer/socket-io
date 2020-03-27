@@ -4,7 +4,7 @@ import { Chatroom } from "./Chatroom";
 import socketCallback from "../utils/enums";
 
 
-const socketUrl = "http://localhost:4000/";
+const socketUrl = "/";
 export class Layout extends React.Component {
   constructor(props) {
     super(props);
