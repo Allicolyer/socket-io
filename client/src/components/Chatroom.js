@@ -53,7 +53,7 @@ export class Chatroom extends React.Component {
       }
     });
 
-    socket.on("transcript", transcript => {
+    socket.on("update transcript", transcript => {
       this.setState({ transcript: transcript });
     });
   }
@@ -122,6 +122,12 @@ export class Chatroom extends React.Component {
     });
   };
 
+  resetTranscript = event => {
+    this.setState({ messages: [] }, function() {
+      this.props.socket.emit("reset transcript", this.state.room);
+    });
+  };
+
   showRoomModal = event => {
     this.setState({
       showRoomModal: !this.state.showRoomModal
@@ -165,6 +171,9 @@ export class Chatroom extends React.Component {
         <div className="header">
           <h1>{this.state.room}</h1>
           <div>
+            <button className="button" onClick={this.resetTranscript}>
+              Reset
+            </button>
             <button className="button" onClick={this.showUsernameModal}>
               Change Username
             </button>
