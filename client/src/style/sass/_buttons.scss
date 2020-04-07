@@ -1,34 +1,31 @@
 /* source https://fdossena.com/?p=html5cool/buttons/i.frag */
 
 .button {
-  display: inline;
-  margin: 0 5px;
   min-width: 130px;
-  border-radius: 10px;
+  border-radius: $border-radius;
   padding: 7.5px 15px;
-  border: 2px solid black;
   box-sizing: border-box;
   text-decoration: none;
   font-weight: 400;
   font-size: 0.8em;
-  color: black;
-  background-color: $green;
+  color: $text-color;
+  background-color: $primary-color;
   text-align: center;
   transition: all 0.15s;
   &:hover {
     cursor: pointer;
     font-weight: bold;
-    border-color: $green;
+    border-color: $primary-color;
     background-color: white;
   }
   &:focus {
-    border-color: $green;
-    background-color: $green;
+    border-color: $primary-color;
+    background-color: $primary-color;
   }
   &:disabled {
     cursor: auto;
-    border-color: gray;
-    background-color: gray;
+    border-color: $gray;
+    background-color: $gray;
     &:hover {
       font-weight: normal;
     }

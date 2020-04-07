@@ -10,24 +10,11 @@ body {
 }
 
 .message-form {
-  position: fixed;
-  bottom: 0;
   height: $message-bar-height;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #000;
   width: 100%;
   input {
-    border: 0;
     padding: 10px;
-    width: 50%;
-    margin-right: 0.5%;
-  }
-  button {
-    background: $green;
-    border: none;
-    padding: 10px;
+    width: 80%;
     margin-right: 0.5%;
   }
 }
@@ -39,16 +26,35 @@ body {
   padding: 10px;
 }
 
-#messages {
+#message-container {
   list-style-type: none;
   margin: 0;
   padding: 0;
-  height: calc(100vh - #{$message-bar-height});
   overflow: scroll;
-
+  height: 300px;
   li {
     padding: 5px 10px;
   }
+  //hides scrollbar on the message container
+  &::-webkit-scrollbar{
+    display:none;
+  }
+}
+
+#transcript-container {
+  overflow: scroll;
+  height: 300px;
+  text-align: center;
+  padding: 10px;
+}
+
+.title {
+  text-align: center;
+}
+.main-text {
+  width: 80%;
+  margin: 0 auto;
+  text-align: justify;
 }
 
 .name {
@@ -59,10 +65,10 @@ body {
   }
 }
 
-.chatroom-container {
+.content {
+  width: 80%;
+  margin: 0 auto;
+  height: 100vh;
   display: flex;
-}
-
-.chat-window {
-  width: 50%;
+  flex-direction: column;
 }
