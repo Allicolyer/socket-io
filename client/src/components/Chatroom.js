@@ -5,20 +5,30 @@ import Transcript from "./Transcript";
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
 import { apiCall } from "../utils/api-call";
+import { socketCallback, rooms } from "../utils/enums";
 
-const roomNames = ["Under the Sea", "Zork", "Pandemic", "Misc"];
 
-const defaultRoom = roomNames[3];
+//sets the default room to Misc
+const defaultRoom = rooms.misc.name;
+//get all the room names from the room object
+const roomNames = Object.values(rooms).map(room => room.name)
 
 export class Chatroom extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      //the current room for the client.
       room: defaultRoom,
+      // The client's chosen username.
       name: "guest",
+      // the message the client has in their input field.
       message: "",
+      // the chat log of previous messages in the current room.
       messages: [],
+      // a compiled version of all messages to be displayed
+      // as a block in the room.
       transcript: "",
+      // toggles modal windows.
       showUsernameModal: true,
       showRoomModal: false
     };
@@ -29,11 +39,15 @@ export class Chatroom extends React.Component {
     this.changeRoom = this.changeRoom.bind(this);
   }
 
+  // runs when the user selects another room to enter.
+  // we emit to the server to fetch the transcript history
+  // for us and update our state accordingly.
   changeRoom(event) {
     let nextRoomName = event.value;
     let previousRoomName = this.state.room;
-    this.setState({ room: nextRoomName, messages: [] }, function() {
-      this.props.socket.emit("room", previousRoomName, nextRoomName);
+    this.setState({ room: nextRoomName, messages: [] }, function () {
+      this.props.socket.emit(socketCallback.changeRoom
+        , previousRoomName, nextRoomName);
     });
   }
 
@@ -42,9 +56,10 @@ export class Chatroom extends React.Component {
     this.initSocket(socket);
   }
 
+  // initializes the socket and sets its callback behavior
   initSocket(socket) {
     // receive message code
-    socket.on("chat message", (name, message, isCurrentUser, isAIUser) => {
+    socket.on(socketCallback.chatMessage, (name, message, isCurrentUser, isAIUser) => {
       this.addMessage(name, message, isCurrentUser, isAIUser);
       if (isCurrentUser) {
         this.playAudio("./audio/outgoing-message.wav");
@@ -53,7 +68,7 @@ export class Chatroom extends React.Component {
       }
     });
 
-    socket.on("update transcript", transcript => {
+    socket.on(socketCallback.updateTranscript, transcript => {
       this.setState({ transcript: transcript });
     });
   }
@@ -66,6 +81,8 @@ export class Chatroom extends React.Component {
     this.setState({ message: event.target.value });
   }
 
+  // when we receive a new message from the server,
+  // we add it to our list of messages to display.
   addMessage(name, message, isCurrentUser, isAIUser) {
     //Keep track of all message text, including punctuation
     // this.updateContext(message);
@@ -92,9 +109,11 @@ export class Chatroom extends React.Component {
     }
   }
 
+  // we call this to make a call to a server GPT-2
+  // for an automated response to our outgoing message.
   sendAIMessage() {
     apiCall(this.state.transcript).then(res =>
-      this.props.socket.emit("AI message", `Robot`, res, this.state.room)
+      this.props.socket.emit(socketCallback.aiMessage, `Robot`, res, this.state.room)
     );
   }
 
@@ -103,10 +122,14 @@ export class Chatroom extends React.Component {
     audio.play();
   }
 
+  // called when a user submits the
+  // contents of their message in the input field.
+  // sends it to the server to update the transcript
+  // and all other sockets' message logs.
   handleSubmit(event) {
     event.preventDefault();
     this.props.socket.emit(
-      "chat message",
+      socketCallback.chatMessage,
       this.state.name,
       this.state.message,
       this.state.room
@@ -122,9 +145,11 @@ export class Chatroom extends React.Component {
     });
   };
 
+  // resets the room's transcript back to its default
+  // for all clients.
   resetTranscript = event => {
-    this.setState({ messages: [] }, function() {
-      this.props.socket.emit("reset transcript", this.state.room);
+    this.setState({ messages: [] }, function () {
+      this.props.socket.emit(socketCallback.resetTranscript, this.state.room);
     });
   };
 
@@ -170,12 +195,12 @@ export class Chatroom extends React.Component {
         </Modal>
 
         <nav>
-          <a class="margin-x" href="/">
-            <img class="logo" src="https://placekitten.com/200/200" />
+          <a className="margin-x" href="/">
+            <img className="logo" src="https://placekitten.com/200/200" />
           </a>
-          <div class="nav-container">
+          <div className="nav-container">
             <a
-              class="nav-link margin-x"
+              className="nav-link margin-x"
               target="_blank"
               href="https://github.com/Allicolyer/socket-io"
             >
@@ -220,7 +245,7 @@ export class Chatroom extends React.Component {
               value={this.state.message}
               onChange={this.handleMessageChange}
             />
-            <button class="button">Send</button>
+            <button className="button">Send</button>
           </form>
           <Transcript context={this.state.transcript} />
         </div>

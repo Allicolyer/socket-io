@@ -1,6 +1,8 @@
 import React from "react";
 import io from "socket.io-client";
 import { Chatroom } from "./Chatroom";
+import socketCallback from "../utils/enums";
+
 
 const socketUrl = "http://localhost:4000/";
 export class Layout extends React.Component {
@@ -19,7 +21,7 @@ export class Layout extends React.Component {
   initSocket = () => {
     const socket = io(socketUrl);
 
-    socket.on("connect", () => {
+    socket.on(socketCallback.connectClient, () => {
       console.log("Connected");
     });
 
