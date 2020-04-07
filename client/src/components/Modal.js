@@ -13,9 +13,9 @@ export default class Modal extends React.Component {
       <div className="modal-container">
         <div className="modal" id="modal">
           <h2>{this.props.header}</h2>
-          <div className="content">{this.props.children}</div>
+          <div className="modal-content">{this.props.children}</div>
           <div className="actions">
-            <button className="toggle-button" onClick={this.onClose}>
+            <button className="button toggle-button" onClick={this.onClose}>
               close
             </button>
           </div>

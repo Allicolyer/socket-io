@@ -168,45 +168,61 @@ export class Chatroom extends React.Component {
             placeholder="Select a Room"
           />
         </Modal>
-        <div className="header">
-          <h1>{this.state.room}</h1>
-          <div>
-            <button className="button" onClick={this.resetTranscript}>
-              Reset
-            </button>
-            <button className="button" onClick={this.showUsernameModal}>
-              Change Username
-            </button>
-            <button className="button" onClick={this.showRoomModal}>
-              Change Room
-            </button>
+
+        <nav>
+          <a class="margin-x" href="/">
+            <img class="logo" src="https://placekitten.com/200/200" />
+          </a>
+          <div class="nav-container">
+            <a
+              class="nav-link margin-x"
+              target="_blank"
+              href="https://github.com/Allicolyer/socket-io"
+            >
+              Github
+            </a>
           </div>
-        </div>
-        <div className="chatroom-container">
-          <div className="chat-window">
-            <ul id="messages">
-              {this.state.messages.map((m, i) => (
-                <Message
-                  key={i}
-                  name={m.name}
-                  message={m.message}
-                  isCurrentUser={m.isCurrentUser}
-                />
-              ))}
-            </ul>
-            <form onSubmit={this.handleSubmit} className="message-form">
-              <input
-                id="message"
-                type="text"
-                value={this.state.message}
-                onChange={this.handleMessageChange}
+        </nav>
+
+        <div className="content margin-y">
+          <div className="header card margin-y">
+            <h1>{this.state.room}</h1>
+            <div>
+              <button className="button" onClick={this.resetTranscript}>
+                Reset
+              </button>
+              <button className="button" onClick={this.showUsernameModal}>
+                Change Username
+              </button>
+              <button className="button" onClick={this.showRoomModal}>
+                Change Room
+              </button>
+            </div>
+          </div>
+
+          <ul id="message-container" className="card margin-y">
+            {this.state.messages.map((m, i) => (
+              <Message
+                key={i}
+                name={m.name}
+                message={m.message}
+                isCurrentUser={m.isCurrentUser}
               />
-              <button>Send</button>
-            </form>
-          </div>
-          <div className="transcript-window">
-            <Transcript context={this.state.transcript} />
-          </div>
+            ))}
+          </ul>
+          <form
+            onSubmit={this.handleSubmit}
+            className="message-form flex-row card margin-y"
+          >
+            <input
+              id="message"
+              type="text"
+              value={this.state.message}
+              onChange={this.handleMessageChange}
+            />
+            <button class="button">Send</button>
+          </form>
+          <Transcript context={this.state.transcript} />
         </div>
       </div>
     );
