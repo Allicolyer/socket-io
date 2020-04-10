@@ -68,6 +68,6 @@ io.on("connection", function (socket) {
   });
 });
 
-http.listen(process.env.PORT || 4001, function () {
+http.listen(process.env.PORT || 4000, function () {
   console.log("listening on *:4000");
 });
